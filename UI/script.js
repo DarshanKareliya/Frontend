@@ -54,9 +54,11 @@ function displayFullTable(data) {
 
 function buildTable(data) {
     var table = document.getElementById("users")
+    table.setAttribute("class","table table-dark table-striped")
     var headRow = `<tr>
         <th>User ID</th>
-        <th>User Name</th> 
+        <th>User Name</th>
+        <th></th> 
     </tr>`
     table.innerHTML += headRow
     for (var i = 0; i < Object.keys(data).length; i++) {
@@ -70,27 +72,28 @@ function buildTable(data) {
     }
 }
 function viewUser(id) {
-    // window.location="http://localhost:63342/frontend/UI/userInfo.html"
-    console.log("inside view user")
-    console.log("id=" + id)
-    let url = "http://localhost:9090/users/" + id
-    $.ajax({
-        url: url,
-        method: "GET",
-        success: function (result) {
-            console.log(result)
-            displayUserTable(result)
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
+    window.location="http://localhost:63342/frontend/UI/userInfo.html?id="+id
+    // console.log("inside view user")
+    // console.log("id=" + id)
+    // let url = "http://localhost:9090/users/" + id
+    // $.ajax({
+    //     url: url,
+    //     method: "GET",
+    //     success: function (result) {
+    //         console.log(result)
+    //         displayUserTable(result)
+    //     },
+    //     error: function (err) {
+    //         console.log(err);
+    //     }
+    // });
 
 }
 
 function displayUserTable(data) {
     var table = document.createElement('table');
     table.setAttribute("id","userdata")
+    table.setAttribute("class","table table-dark table-striped")
 
     // Create header
     var thead = document.createElement('thead');
@@ -101,7 +104,6 @@ function displayUserTable(data) {
             var th = document.createElement('th');
             th.textContent = key;
             headerRow.appendChild(th);
-
         }
 
     });
@@ -194,9 +196,7 @@ function deleteUser(id) {
                 console.log(err);
             }
         });    
-    }
-    
-    
+    }   
 }
 function editUser(data) {
     var table = $('#updateTable');
