@@ -46,7 +46,7 @@ function displayFullTable(data) {
     });
 
     table.appendChild(tbody);
-    let container = document.getElementById("userstable");
+    // let container = document.getElementById("userstable");
     // container.appendChild(table)
     document.body.appendChild(table);
 }
@@ -125,7 +125,38 @@ function displayUserTable(data) {
     tbody.appendChild(row);
     table.appendChild(tbody);
     let container=document.getElementById("userdata");
-  //  container.appendChild(table)
    container.replaceWith(document.getElementById("usertable"),table);
-   // document.body.replaceWith(document.getElementById("usertable"),table);
 }
+
+function addUser() {
+    console.log("called from form")
+    var name=document.getElementById("username").value;
+    var email=document.getElementById("email").value;
+    var password=document.getElementById("password").value;
+    var mobile=document.getElementById("mobile").value;
+    console.log(username +" "+password)
+    $.ajax({
+        url: "http://localhost:9090/users" ,
+        method: "post",
+        contentType: "application/json",
+        data: JSON.stringify({username:name,
+            email:email,
+            password:password,
+            mobile:mobile
+        }),
+        success: function (result) {
+            console.log(result)
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    
+}
+
+// window.onload=function () {
+//     var form=document.getElementById("addForm")
+//     form.addEventListener("submit",addUser)
+    
+// }
+
