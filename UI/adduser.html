@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="adduser.js"></script>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+</head>
+
+<body>
+    <div>
+        <table class="table table-dark table-striped">
+            <form id="addForm" method="post">
+                <tr>
+                    <td>
+                        <label for="username">
+                            username
+                        </label>
+                    </td>
+                    <td><input type="text" id="addusername" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="email">
+                            Email
+                        </label>
+                    </td>
+                    <td><input type="email" id="addemail" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="password">
+                            password
+                        </label>
+                    </td>
+                    <td><input type="password" id="addpassword" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="mobile">
+                            Mobile No.
+                        </label>
+                    </td>
+                    <td><input type="number" id="addmobile" />
+                    </td>
+                </tr>
+                </tr>
+                
+            </form>
+            <tr>
+                <td></td>
+                <td><button id="add" onclick="addUser()">submit</button></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>
