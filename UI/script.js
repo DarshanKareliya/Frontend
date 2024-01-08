@@ -63,15 +63,15 @@ function buildTable(data) {
         var row = `<tr>
             <td>${data[i].id}</td>
             <td>${data[i].username}</td>
-            <td><Button onclick="userRedirect(`+ data[i].id + `)">view</Button></td>
+            <td><Button onclick="viewUser(`+ data[i].id + `)">view</Button></td>
             </tr>`
         table.innerHTML += row
         console.log(typeof data[i].id)
     }
 }
-function userRedirect(id) {
+function viewUser(id) {
     // window.location="http://localhost:63342/frontend/UI/userInfo.html"
-    console.log("inside userRedirect")
+    console.log("inside view user")
     console.log("id=" + id)
     let url = "http://localhost:9090/users/" + id
     $.ajax({
@@ -96,8 +96,6 @@ function displayUserTable(data) {
     var thead = document.createElement('thead');
     var headerRow = document.createElement('tr');
     console.log(Object.keys(data))
-
-
     Object.keys(data).forEach(function (key) {    //  Object.keys(data[0]) = keyset of 0 th row (1st row) of data
         if (key != null) {
             var th = document.createElement('th');
@@ -122,6 +120,33 @@ function displayUserTable(data) {
             row.appendChild(cell);
         }
     );
+
+    // create edit button
+    var editButton=document.createElement('button')
+    editButton.textContent="edit"
+    editButton.addEventListener('click',()=>{
+        console.log("edit button clicked")
+        editUser(data)
+    })
+    var cell = document.createElement('td');
+    cell.appendChild(editButton)
+    row.appendChild(cell)
+
+    //create delete button
+    var deleteButton=document.createElement('button')
+    deleteButton.textContent="delete"
+    deleteButton.addEventListener('click',()=>{
+        console.log("delete button clicked")
+        console.log("delete user of id :"+` ${data.id}`)
+        deleteUser(`${data.id}`)
+        
+
+    })
+    var deleteButtonCell = document.createElement('td');
+    deleteButtonCell.appendChild(deleteButton)
+    row.appendChild(deleteButtonCell)
+
+
     tbody.appendChild(row);
     table.appendChild(tbody);
     let container=document.getElementById("userdata");
@@ -130,11 +155,11 @@ function displayUserTable(data) {
 
 function addUser() {
     console.log("called from form")
-    var name=document.getElementById("username").value;
-    var email=document.getElementById("email").value;
-    var password=document.getElementById("password").value;
-    var mobile=document.getElementById("mobile").value;
-    console.log(username +" "+password)
+    var name=document.getElementById("addusername").value;
+    var email=document.getElementById("addemail").value;
+    var password=document.getElementById("addpassword").value;
+    var mobile=document.getElementById("addmobile").value;
+    console.log(name +" "+password)
     $.ajax({
         url: "http://localhost:9090/users" ,
         method: "post",
@@ -153,10 +178,82 @@ function addUser() {
     });
     
 }
-
-// window.onload=function () {
-//     var form=document.getElementById("addForm")
-//     form.addEventListener("submit",addUser)
+function deleteUser(id) {
+    console.log("inside delete user: id= "+id);
+    var confirmation=confirm("are you sure you want to delete?")
+    if (confirmation) {
+        $.ajax({
+            url: "http://localhost:9090/users/"+id ,
+            method: "delete",
+            // contentType: "application/json",
+            success: function (result) {
+                console.log(result)
+                console.log("successfully deleted")
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });    
+    }
     
-// }
+    
+}
+function editUser(data) {
+    var table = $('#updateTable');
+    table.empty();
+    var tbody = $('<tbody>');
+    $.each(data, function(key,val){
+        console.log("key : "+key+" ; value : "+val);
+        var row = $('<tr>');
+        var td1 = $('<td>').text(key);
+        var textbox = document.createElement("input");
+        textbox.setAttribute("id",key)
+        textbox.value=val
+        var td2 = $('<td>');
+        td2.append(textbox);
+        row.append(td1);
+        row.append(td2);
+        tbody.append(row);
+    });
+     table.append(tbody);
+     var r = $('<input/>').attr({
+        type: "button",
+        id: "update",
+        value: "save",
+        onclick: "updateUser("+`${data.id}`+")"
+    });
+    var row = $('<tr>');
+    var td = $('<td>');
+    td.append(r);   
+    row.append(td)
+    table.append(row);
+}
+function updateUser(id) {
+    console.log("updateUser : id = "+id);
+    console.log(document.getElementById("id").value)
+    console.log(document.getElementById("username").value)
+    console.log(document.getElementById("email").value)
+    console.log(document.getElementById("password").value)
+    console.log(document.getElementById("mobile").value)
+    upadateData={
+        username:document.getElementById("username").value,
+        email:document.getElementById("email").value,
+        password:document.getElementById("password").value,
+        mobile:document.getElementById("mobile").value
+    }
+    $.ajax({
+        url: "http://localhost:9090/users/"+id ,
+        method: "patch",
+        contentType: "application/json",
+        data:JSON.stringify(upadateData),
+        success: function (result) {
+            console.log(result)
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+
+
+}
 
